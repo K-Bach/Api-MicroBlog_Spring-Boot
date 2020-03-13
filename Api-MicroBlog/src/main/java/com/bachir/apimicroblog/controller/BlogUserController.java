@@ -18,12 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Bachir_Karim
  */
 @RestController
-@RequestMapping("users")
+@RequestMapping("/users")
 public class BlogUserController
 {
     @Autowired
     BlogUserDao blogUserDao;
     
+    @RequestMapping
     public List<BlogUser> getUsers()
     {
         return (List<BlogUser>) blogUserDao.findAll();
