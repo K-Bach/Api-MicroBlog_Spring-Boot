@@ -46,7 +46,7 @@ public class CommentController
         commentDao.save(comment);
     }
     
-    @RequestMapping(value = "/deletecomment/{id}")
+    @RequestMapping(method = RequestMethod.DELETE,value = "/deletecomment/{id}")
     public void deletePostById(@PathVariable("id") Long commentId)
     {
         commentDao.deleteById(commentId);

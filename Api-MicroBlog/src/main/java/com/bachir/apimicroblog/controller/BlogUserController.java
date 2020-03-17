@@ -46,7 +46,7 @@ public class BlogUserController
         blogUserDao.save(user);
     }
     
-    @RequestMapping(value = "/deleteuser/{id}")
+    @RequestMapping(method = RequestMethod.DELETE,value = "/deleteuser/{id}")
     public void deleteUserById(@PathVariable("id") Long userId)
     {
         blogUserDao.deleteById(userId);
