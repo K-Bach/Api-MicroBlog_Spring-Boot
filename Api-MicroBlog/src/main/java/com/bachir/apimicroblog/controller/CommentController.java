@@ -5,8 +5,8 @@
  */
 package com.bachir.apimicroblog.controller;
 
-import com.bachir.apimicroblog.dao.CommentDao;
 import com.bachir.apimicroblog.domain.Comment;
+import com.bachir.apimicroblog.service.CommentService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -26,29 +26,29 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommentController
 {
     @Autowired
-    CommentDao commentDao;
+    CommentService commentService;
    
     @RequestMapping
     public List<Comment> getUsers()
     {
-        return (List<Comment>) commentDao.findAll();
+        return (List<Comment>) commentService.getAllComments();
     }
     
     @RequestMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Comment getCommentById(@PathVariable("id") Long commentId)
     {
-        return commentDao.findById(commentId).orElseThrow();
+        return commentService.getCommentById(commentId);
     }
     
     @RequestMapping(method = RequestMethod.POST)
     public void createComment(@RequestBody Comment comment)
     {
-        commentDao.save(comment);
+        commentService.insertComment(comment);
     }
     
     @RequestMapping(method = RequestMethod.DELETE,value = "/deletecomment/{id}")
     public void deletePostById(@PathVariable("id") Long commentId)
     {
-        commentDao.deleteById(commentId);
+        commentService.deleteCommentById(commentId);
     }
 }

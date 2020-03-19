@@ -5,8 +5,8 @@
  */
 package com.bachir.apimicroblog.controller;
 
-import com.bachir.apimicroblog.dao.PostDao;
 import com.bachir.apimicroblog.domain.Post;
+import com.bachir.apimicroblog.service.PostService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -26,30 +26,30 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostController
 {
     @Autowired
-    PostDao postDao;
+    PostService postService;
     
     @RequestMapping
     public List<Post> getPosts()
     {
-        return (List<Post>) postDao.findAll();
+        return postService.getAllPosts();
     }
     
     @RequestMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Post getPostById(@PathVariable("id") Long postId)
     {
-        return postDao.findById(postId).orElseThrow();
+        return postService.getPostById(postId);
     }
     
     @RequestMapping(method = RequestMethod.POST)
     public void createPost(@RequestBody Post post)
     {
-        postDao.save(post);
+        postService.insertPost(post);
     }
     
     @RequestMapping(value = "/deletepost/{id}")
     public void deletePostById(@PathVariable("id") Long postId)
     {
-        postDao.deleteById(postId);
+        postService.deletePostById(postId);
     }
     
 }

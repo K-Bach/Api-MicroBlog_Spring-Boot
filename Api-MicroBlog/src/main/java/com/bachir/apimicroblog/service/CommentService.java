@@ -39,4 +39,14 @@ public class CommentService
     {
         return (List<Comment>) commentDao.findAll();
     }
+    
+    public Comment getCommentById(Long id)
+    {
+        return commentDao.findById(id).get();
+    }
+    
+    public void deleteCommentById(Long id)
+    {
+        commentDao.deleteById(id);
+    }
 }
