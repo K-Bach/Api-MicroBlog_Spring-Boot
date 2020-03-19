@@ -4,6 +4,6 @@
    
  -Utilizzare questa configurazione:  
  ![alt text](img/accesso-db.png)  
- -Username: admin  
+ -User Name: admin  
  -Password: admin
  
