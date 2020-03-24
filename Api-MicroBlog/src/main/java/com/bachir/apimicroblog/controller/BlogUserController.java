@@ -7,6 +7,8 @@ package com.bachir.apimicroblog.controller;
 
 import com.bachir.apimicroblog.domain.BlogUser;
 import com.bachir.apimicroblog.service.BlogUserService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -28,26 +30,27 @@ public class BlogUserController
     @Autowired
     BlogUserService blogUserService;
     
-    @RequestMapping
+    @RequestMapping(method = RequestMethod.GET)
     public List<BlogUser> getUsers()
     {
         return blogUserService.getAllUsers();
     }
     
-    @RequestMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public BlogUser getUserById(@PathVariable("id") Long userId)
+    @RequestMapping(method = RequestMethod.GET,value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "bubba")
+    public BlogUser getUserById(@ApiParam@PathVariable("id") Long userId)
     {
         return blogUserService.getBlogUserById(userId);
     }
     
     @RequestMapping(method = RequestMethod.POST)
-    public void addUser(@RequestBody BlogUser user)
+    public void addUser(@ApiParam@RequestBody BlogUser user)
     {
         blogUserService.insertUser(user);
     }
     
     @RequestMapping(method = RequestMethod.DELETE,value = "/deleteuser/{id}")
-    public void deleteUserById(@PathVariable("id") Long userId)
+    public void deleteUserById(@ApiParam@PathVariable("id") Long userId)
     {
         blogUserService.deleteBlogUserById(userId);
     }
