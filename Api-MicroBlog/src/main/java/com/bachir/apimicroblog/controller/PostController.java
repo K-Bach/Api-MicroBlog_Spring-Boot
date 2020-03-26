@@ -30,29 +30,29 @@ public class PostController
     @Autowired
     PostService postService;
     
-    @ApiOperation(value = "returns all the posts")
     @RequestMapping(method = RequestMethod.GET)
+    @ApiOperation(value = "returns all the posts")
     public List<Post> getPosts()
     {
         return postService.getAllPosts();
     }
     
-    @ApiOperation(value = "returns a post by an id")
     @RequestMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    @ApiOperation(value = "returns a post by an ID")
     public Post getPostById(@ApiParam@PathVariable("id") Long postId)
     {
         return postService.getPostById(postId);
     }
     
-    @ApiOperation(value = "adds a post in the database")
     @RequestMapping(method = RequestMethod.POST)
+    @ApiOperation(value = "adds a post in the database")
     public void addPost(@ApiParam@RequestBody Post post)
     {
         postService.insertPost(post);
     }
     
-    @ApiOperation(value = "deletes a post by an id")
     @RequestMapping(method = RequestMethod.DELETE,value = "/deletepost/{id}")
+    @ApiOperation(value = "deletes a post by an ID")
     public void deletePostById(@ApiParam@PathVariable("id") Long postId)
     {
         postService.deletePostById(postId);

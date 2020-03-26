@@ -7,6 +7,7 @@ package com.bachir.apimicroblog.controller;
 
 import com.bachir.apimicroblog.domain.Comment;
 import com.bachir.apimicroblog.service.CommentService;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,24 +31,28 @@ public class CommentController
     CommentService commentService;
    
     @RequestMapping(method = RequestMethod.GET)
+    @ApiOperation(value = "returns all the comments")
     public List<Comment> getComments()
     {
         return (List<Comment>) commentService.getAllComments();
     }
     
     @RequestMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    @ApiOperation(value = "returns a comment by an ID")
     public Comment getCommentById(@ApiParam@PathVariable("id") Long commentId)
     {
         return commentService.getCommentById(commentId);
     }
     
     @RequestMapping(method = RequestMethod.POST)
-    public void createComment(@ApiParam@RequestBody Comment comment)
+    @ApiOperation(value = "adds a comment into the database")
+    public void addComment(@ApiParam@RequestBody Comment comment)
     {
         commentService.insertComment(comment);
     }
     
     @RequestMapping(method = RequestMethod.DELETE,value = "/deletecomment/{id}")
+    @ApiOperation(value = "deletes a comment by an ID")
     public void deleteCommentById(@ApiParam@PathVariable("id") Long commentId)
     {
         commentService.deleteCommentById(commentId);

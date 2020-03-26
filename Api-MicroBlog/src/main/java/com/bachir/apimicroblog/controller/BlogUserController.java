@@ -31,25 +31,28 @@ public class BlogUserController
     BlogUserService blogUserService;
     
     @RequestMapping(method = RequestMethod.GET)
+    @ApiOperation(value = "returns all the users")
     public List<BlogUser> getUsers()
     {
         return blogUserService.getAllUsers();
     }
     
     @RequestMapping(method = RequestMethod.GET,value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "bubba")
+    @ApiOperation(value = "returns a user by an ID")
     public BlogUser getUserById(@ApiParam@PathVariable("id") Long userId)
     {
         return blogUserService.getBlogUserById(userId);
     }
     
     @RequestMapping(method = RequestMethod.POST)
+    @ApiOperation(value = "adds a user into the database")
     public void addUser(@ApiParam@RequestBody BlogUser user)
     {
         blogUserService.insertUser(user);
     }
     
     @RequestMapping(method = RequestMethod.DELETE,value = "/deleteuser/{id}")
+    @ApiOperation(value = "deletes a user by an ID")
     public void deleteUserById(@ApiParam@PathVariable("id") Long userId)
     {
         blogUserService.deleteBlogUserById(userId);
