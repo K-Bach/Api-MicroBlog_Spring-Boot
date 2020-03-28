@@ -8,6 +8,7 @@ package com.bachir.apimicroblog.service;
 import com.bachir.apimicroblog.dao.CommentDao;
 import com.bachir.apimicroblog.domain.Comment;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +23,9 @@ public class CommentService
     @Autowired
     CommentDao commentDao;
     
-    public void insertComment(Comment comment)
+    public Comment insertComment(Comment comment)
     {
-        commentDao.save(comment);
+        return commentDao.save(comment);
     }
     
     public void updateComment(Long id, Comment comment)
@@ -40,9 +41,9 @@ public class CommentService
         return (List<Comment>) commentDao.findAll();
     }
     
-    public Comment getCommentById(Long id)
+    public Optional<Comment> getCommentById(Long id)
     {
-        return commentDao.findById(id).get();
+        return commentDao.findById(id);
     }
     
     public void deleteCommentById(Long id)

@@ -67,12 +67,12 @@ public class BlogUserController
     
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "adds a user into the database")
-    public ResponseEntity<JsonResponseBody> addUser(HttpServletRequest request,@ApiParam@RequestBody BlogUser u)
+    public ResponseEntity<JsonResponseBody> addUser(HttpServletRequest request, @ApiParam@RequestBody BlogUser u)
     {
         try
         {   
             BlogUser user = blogUserService.insertUser(u);
-            return ResponseEntity.status(HttpStatus.CREATED).header("location", request.getRequestURL().toString() + "/" + user.getId()).body(new JsonResponseBody(HttpStatus.CREATED.value(), null));
+            return ResponseEntity.status(HttpStatus.CREATED).header("location", request.getRequestURL().toString() + user.getId()).body(new JsonResponseBody(HttpStatus.CREATED.value(), null));
         }
         catch( Exception e )
         {

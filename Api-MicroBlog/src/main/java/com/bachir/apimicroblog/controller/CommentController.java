@@ -6,12 +6,16 @@
 package com.bachir.apimicroblog.controller;
 
 import com.bachir.apimicroblog.domain.Comment;
+import com.bachir.apimicroblog.entities.JsonResponseBody;
 import com.bachir.apimicroblog.service.CommentService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,31 +34,72 @@ public class CommentController
     @Autowired
     CommentService commentService;
    
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "returns all the comments")
-    public List<Comment> getComments()
+    public ResponseEntity<JsonResponseBody> getComments()
     {
-        return (List<Comment>) commentService.getAllComments();
+        try
+        {
+            List<Comment> comments = commentService.getAllComments();
+            return ResponseEntity.status(HttpStatus.OK).body(new JsonResponseBody(HttpStatus.OK.value(), comments));
+        }
+        catch( Exception e )
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new JsonResponseBody(HttpStatus.BAD_REQUEST.value(), "Error: " + e.toString()));
+        }
     }
     
     @RequestMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     @ApiOperation(value = "returns a comment by an ID")
-    public Comment getCommentById(@ApiParam@PathVariable("id") Long commentId)
+    public ResponseEntity<JsonResponseBody> getCommentById(@ApiParam@PathVariable("id") Long commentId)
     {
-        return commentService.getCommentById(commentId);
+        try
+        {
+            
+            Comment comment = commentService.getCommentById(commentId).get();
+            return ResponseEntity.status(HttpStatus.FOUND).body(new JsonResponseBody(HttpStatus.FOUND.value(), comment));
+        }
+        catch( Exception e )
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new JsonResponseBody(HttpStatus.NOT_FOUND.value(), "Error: " + e.toString()));
+        }
     }
     
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "adds a comment into the database")
-    public void addComment(@ApiParam@RequestBody Comment comment)
+    public ResponseEntity<JsonResponseBody> addComment(HttpServletRequest request, @ApiParam@RequestBody Comment c)
     {
-        commentService.insertComment(comment);
+        try
+        {   
+            Comment comment = commentService.insertComment(c);
+            return ResponseEntity.status(HttpStatus.CREATED).header("location", request.getRequestURL().toString() + comment.getId()).body(new JsonResponseBody(HttpStatus.CREATED.value(), null));
+        }
+        catch( Exception e )
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new JsonResponseBody(HttpStatus.BAD_REQUEST.value(), "Error: " + e.toString()));
+        }
     }
     
-    @RequestMapping(method = RequestMethod.DELETE,value = "/deletecomment/{id}")
+    @RequestMapping(method = RequestMethod.DELETE,value = "/deletecomment/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "deletes a comment by an ID")
-    public void deleteCommentById(@ApiParam@PathVariable("id") Long commentId)
+    public ResponseEntity<JsonResponseBody> deleteCommentById(@ApiParam@PathVariable("id") Long commentId)
     {
-        commentService.deleteCommentById(commentId);
+        try
+        {   
+            if( commentService.getCommentById(commentId).isPresent())
+            {
+                commentService.deleteCommentById(commentId);
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new JsonResponseBody(HttpStatus.NO_CONTENT.value(), null));
+            }
+            else
+            {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new JsonResponseBody(HttpStatus.NOT_FOUND.value(), "Error: comment not found"));
+            }
+                
+        }
+        catch( Exception e )
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new JsonResponseBody(HttpStatus.BAD_REQUEST.value(), "Error: " + e.toString()));
+        }
     }
 }
