@@ -8,6 +8,7 @@ package com.bachir.apimicroblog.service;
 import com.bachir.apimicroblog.dao.PostDao;
 import com.bachir.apimicroblog.domain.Post;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +23,9 @@ public class PostService
     @Autowired
     PostDao postDao;
     
-    public void insertPost(Post post)
+    public Post insertPost(Post post)
     {
-        postDao.save(post);
+        return postDao.save(post);
     }
     
     public List<Post> getAllPosts()
@@ -32,9 +33,9 @@ public class PostService
         return (List<Post>) postDao.findAll();
     }
     
-    public Post getPostById(Long id)
+    public Optional<Post> getPostById(Long id)
     {
-        return postDao.findById(id).get();
+        return postDao.findById(id);
     }
     
     public void deletePostById(Long id)
