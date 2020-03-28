@@ -7,8 +7,8 @@ package com.bachir.apimicroblog.service;
 
 import com.bachir.apimicroblog.dao.BlogUserDao;
 import com.bachir.apimicroblog.domain.BlogUser;
-import com.bachir.apimicroblog.exception.BlogUserNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +23,9 @@ public class BlogUserService
     @Autowired
     BlogUserDao blogUserDao;
     
-    public void insertUser(BlogUser blogUser)
+    public BlogUser insertUser(BlogUser blogUser)
     {
-        blogUserDao.save(blogUser);
+        return blogUserDao.save(blogUser);  
     }
     
     public List<BlogUser> getAllUsers()
@@ -33,12 +33,9 @@ public class BlogUserService
         return (List<BlogUser>) blogUserDao.findAll();
     }
     
-    public BlogUser getBlogUserById(Long id)
+    public Optional<BlogUser> getBlogUserById(Long id)
     {       
-        if(blogUserDao.findById(id).isPresent())
-            return blogUserDao.findById(id).get();
-        else
-            throw new BlogUserNotFoundException();
+            return blogUserDao.findById(id);
     }
     
     public void deleteBlogUserById(Long id)
