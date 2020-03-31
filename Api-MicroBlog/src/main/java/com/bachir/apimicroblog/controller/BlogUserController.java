@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -44,6 +45,23 @@ public class BlogUserController
         {
             List<BlogUser> users = blogUserService.getAllUsers();
             return ResponseEntity.status(HttpStatus.OK).body(new JsonResponseBody(HttpStatus.OK.value(), users));
+        }
+        catch( Exception e )
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new JsonResponseBody(HttpStatus.BAD_REQUEST.value(), "Error: " + e.toString()));
+        }
+    }
+    
+    @RequestMapping(method = RequestMethod.GET, params = {"username","password"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "checks if a user exist in the database")
+    public ResponseEntity<JsonResponseBody> checkUser(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("password") String password)
+    {
+        try
+        {   
+            if(blogUserService.checkUserByUsernameAndPassword(username, password))
+                return ResponseEntity.status(HttpStatus.FOUND).body(new JsonResponseBody(HttpStatus.FOUND.value(), "User found"));
+            else
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new JsonResponseBody(HttpStatus.NOT_FOUND.value(), "User not found"));
         }
         catch( Exception e )
         {

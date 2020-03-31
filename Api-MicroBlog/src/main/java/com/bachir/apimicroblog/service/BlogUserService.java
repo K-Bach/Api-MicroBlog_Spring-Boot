@@ -28,6 +28,12 @@ public class BlogUserService
         return blogUserDao.save(blogUser);  
     }
     
+    public boolean checkUserByUsernameAndPassword(String username, String password)
+    {
+        BlogUser user = blogUserDao.findByUsernameAndPassword(username, password);
+        return user != null;
+    }
+    
     public List<BlogUser> getAllUsers()
     {
         return (List<BlogUser>) blogUserDao.findAll();

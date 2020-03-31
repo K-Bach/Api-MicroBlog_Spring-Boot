@@ -15,5 +15,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface BlogUserDao extends CrudRepository<BlogUser, Long>
 {
-    
+    BlogUser findByUsernameAndPassword(String username, String password);
 }
