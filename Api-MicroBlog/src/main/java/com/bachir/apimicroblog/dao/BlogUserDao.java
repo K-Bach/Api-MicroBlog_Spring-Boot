@@ -6,6 +6,7 @@
 package com.bachir.apimicroblog.dao;
 
 import com.bachir.apimicroblog.domain.BlogUser;
+import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 
 
@@ -15,5 +16,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface BlogUserDao extends CrudRepository<BlogUser, Long>
 {
-    BlogUser findByUsernameAndPassword(String username, String password);
+    Optional<BlogUser> findByUsernameAndPassword(String username, String password);
 }

@@ -30,8 +30,13 @@ public class BlogUserService
     
     public boolean checkUserByUsernameAndPassword(String username, String password)
     {
-        BlogUser user = blogUserDao.findByUsernameAndPassword(username, password);
-        return user != null;
+        Optional<BlogUser> user = blogUserDao.findByUsernameAndPassword(username, password);
+        return !user.isEmpty();
+    }
+    
+    public Optional<BlogUser> getUserByUsernameAndPassword(String username, String password)
+    {
+        return blogUserDao.findByUsernameAndPassword(username, password);
     }
     
     public List<BlogUser> getAllUsers()

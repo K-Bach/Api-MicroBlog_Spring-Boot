@@ -57,9 +57,12 @@ public class BlogUserController
     public ResponseEntity<JsonResponseBody> checkUser(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("password") String password)
     {
         try
-        {   
+        {  
             if(blogUserService.checkUserByUsernameAndPassword(username, password))
-                return ResponseEntity.status(HttpStatus.FOUND).body(new JsonResponseBody(HttpStatus.FOUND.value(), "User found"));
+            {
+                Long userID = blogUserService.getUserByUsernameAndPassword(username, password).get().getId();
+                return ResponseEntity.status(HttpStatus.FOUND).body(new JsonResponseBody(HttpStatus.FOUND.value(), userID));
+            }
             else
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new JsonResponseBody(HttpStatus.NOT_FOUND.value(), "User not found"));
         }
