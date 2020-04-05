@@ -58,7 +58,7 @@ public class BlogUserController
     public ResponseEntity<JsonResponseBody> findUserByUsernameAndPassword(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("password") String password)
     {
         try
-        {  
+        {   
             Optional<BlogUser> user = blogUserService.findUserByUsernameAndPassword(username, password);
             if(user.isEmpty())
             {

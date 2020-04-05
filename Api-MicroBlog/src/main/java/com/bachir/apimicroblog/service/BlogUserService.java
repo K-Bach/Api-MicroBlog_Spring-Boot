@@ -28,15 +28,17 @@ public class BlogUserService
         return blogUserDao.save(blogUser);  
     }
     
-    public Optional<BlogUser> findUserByUsernameAndPassword(String username, String password)
-    {
-        Optional<BlogUser> user = blogUserDao.findByUsernameAndPassword(username, password);
-        return user;
-    }
-    
-    public Optional<BlogUser> getUserByUsernameAndPassword(String username, String password)
-    {
-        return blogUserDao.findByUsernameAndPassword(username, password);
+    public Optional<BlogUser> findUserByUsernameAndPassword(String username, String password) throws Exception
+    {   
+        if("".equals(username))
+            throw new Exception("Invalid username");
+        if("".equals(password))
+            throw new Exception("Invalid password");
+        else
+        {
+            Optional<BlogUser> user = blogUserDao.findByUsernameAndPassword(username, password);
+            return user;
+        }
     }
     
     public List<BlogUser> getAllUsers()
