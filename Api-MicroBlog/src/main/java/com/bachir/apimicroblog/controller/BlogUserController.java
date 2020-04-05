@@ -11,6 +11,7 @@ import com.bachir.apimicroblog.service.BlogUserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.util.List;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,18 +54,19 @@ public class BlogUserController
     }
     
     @RequestMapping(method = RequestMethod.GET, params = {"username","password"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "checks if a user exist in the database")
-    public ResponseEntity<JsonResponseBody> checkUser(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("password") String password)
+    @ApiOperation(value = "returns a user by a Username and a Password")
+    public ResponseEntity<JsonResponseBody> findUserByUsernameAndPassword(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("password") String password)
     {
         try
         {  
-            if(blogUserService.checkUserByUsernameAndPassword(username, password))
+            Optional<BlogUser> user = blogUserService.findUserByUsernameAndPassword(username, password);
+            if(user.isEmpty())
             {
-                Long userID = blogUserService.getUserByUsernameAndPassword(username, password).get().getId();
-                return ResponseEntity.status(HttpStatus.FOUND).body(new JsonResponseBody(HttpStatus.FOUND.value(), userID));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new JsonResponseBody(HttpStatus.NOT_FOUND.value(), "User not found"));
             }
             else
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new JsonResponseBody(HttpStatus.NOT_FOUND.value(), "User not found"));
+                return ResponseEntity.status(HttpStatus.FOUND).body(new JsonResponseBody(HttpStatus.FOUND.value(), user.get()));
+            
         }
         catch( Exception e )
         {
@@ -78,7 +80,6 @@ public class BlogUserController
     {
         try
         {
-            
             BlogUser user = blogUserService.getBlogUserById(userId).get();
             return ResponseEntity.status(HttpStatus.FOUND).body(new JsonResponseBody(HttpStatus.FOUND.value(), user));
         }

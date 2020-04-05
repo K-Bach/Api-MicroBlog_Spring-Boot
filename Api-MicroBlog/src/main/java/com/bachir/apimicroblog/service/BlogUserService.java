@@ -28,10 +28,10 @@ public class BlogUserService
         return blogUserDao.save(blogUser);  
     }
     
-    public boolean checkUserByUsernameAndPassword(String username, String password)
+    public Optional<BlogUser> findUserByUsernameAndPassword(String username, String password)
     {
         Optional<BlogUser> user = blogUserDao.findByUsernameAndPassword(username, password);
-        return !user.isEmpty();
+        return user;
     }
     
     public Optional<BlogUser> getUserByUsernameAndPassword(String username, String password)
