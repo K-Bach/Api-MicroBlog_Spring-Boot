@@ -59,7 +59,7 @@ public class BlogUserController
     {
         try
         {   
-            Optional<BlogUser> user = blogUserService.findUserByUsernameAndPassword(username, password);
+            Optional<BlogUser> user = blogUserService.getUserByUsernameAndPassword(username, password);
             if(user.isEmpty())
             {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new JsonResponseBody(HttpStatus.NOT_FOUND.value(), "User not found"));

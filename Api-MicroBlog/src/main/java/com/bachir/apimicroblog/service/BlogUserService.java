@@ -20,40 +20,61 @@ import org.springframework.stereotype.Service;
 @Service
 public class BlogUserService
 {
+
     @Autowired
     BlogUserDao blogUserDao;
-    
-    public BlogUser insertUser(BlogUser blogUser)
+
+    public BlogUser insertUser( BlogUser blogUser )
     {
-        return blogUserDao.save(blogUser);  
+        return blogUserDao.save(blogUser);
     }
-    
-    public Optional<BlogUser> findUserByUsernameAndPassword(String username, String password) throws Exception
-    {   
-        if("".equals(username))
+
+    public Optional<BlogUser> getUserByUsernameAndPassword( String username, String password ) throws Exception
+    {
+        if( "".equals(username) )
+        {
             throw new Exception("Invalid username");
-        if("".equals(password))
+        }
+        if( "".equals(password) )
+        {
             throw new Exception("Invalid password");
+        }
         else
         {
             Optional<BlogUser> user = blogUserDao.findByUsernameAndPassword(username, password);
             return user;
         }
     }
-    
+
     public List<BlogUser> getAllUsers()
     {
         return (List<BlogUser>) blogUserDao.findAll();
     }
-    
-    public Optional<BlogUser> getBlogUserById(Long id)
-    {       
-            return blogUserDao.findById(id);
-    }
-    
-    public void deleteBlogUserById(Long id)
+
+    public Optional<BlogUser> getBlogUserById( Long id )
     {
-        blogUserDao.deleteById(id);
-    } 
-    
+        return blogUserDao.findById(id);
+    }
+
+    public void deleteBlogUserById( Long id ) throws Exception
+    {
+        if( "".equals(id) )
+        {
+            throw new Exception("Invalid id");
+        }
+        else
+        {
+            Optional<BlogUser> user = getBlogUserById(id);
+            if( user.isEmpty() )
+            {
+                throw new Exception("User not found");
+            }
+            else
+            {
+                blogUserDao.deleteById(id);
+            }
+        }
+
+    }
+
 }
