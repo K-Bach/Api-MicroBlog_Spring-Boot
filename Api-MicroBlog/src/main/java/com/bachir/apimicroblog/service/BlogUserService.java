@@ -35,7 +35,7 @@ public class BlogUserService
         {
             throw new Exception("Invalid username");
         }
-        if( "".equals(password) )
+        else if( "".equals(password) )
         {
             throw new Exception("Invalid password");
         }
@@ -51,9 +51,24 @@ public class BlogUserService
         return (List<BlogUser>) blogUserDao.findAll();
     }
 
-    public Optional<BlogUser> getBlogUserById( Long id )
+    public Optional<BlogUser> getBlogUserById( Long id ) throws Exception
     {
-        return blogUserDao.findById(id);
+        if( "".equals(id) )
+        {
+            throw new Exception("Invalid id");
+        }
+        else
+        {
+            Optional<BlogUser> user = getBlogUserById(id);
+            if( user.isEmpty() )
+            {
+                throw new Exception("User not found");
+            }
+            else
+            {
+                return blogUserDao.findById(id);
+            }
+        }
     }
 
     public void deleteBlogUserById( Long id ) throws Exception
