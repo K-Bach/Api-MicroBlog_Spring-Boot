@@ -65,7 +65,7 @@ public class PostController
         {
 
             Post post = postService.getPostById(postId).get();
-            return ResponseEntity.status(HttpStatus.FOUND).body(new JsonResponseBody(HttpStatus.FOUND.value(), post));
+            return ResponseEntity.status(HttpStatus.OK).body(new JsonResponseBody(HttpStatus.OK.value(), post));
         }
         catch( Exception e )
         {
