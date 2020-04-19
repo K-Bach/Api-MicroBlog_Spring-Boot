@@ -80,7 +80,7 @@ public class PostController
         try
         {
             Post post = postService.insertPost(p);
-            return ResponseEntity.status(HttpStatus.CREATED).header("location", request.getRequestURL().toString() + post.getId()).body(new JsonResponseBody(HttpStatus.CREATED.value(), null));
+            return ResponseEntity.status(HttpStatus.CREATED).header("location", request.getRequestURL().toString() + post.getId()).body(new JsonResponseBody(HttpStatus.CREATED.value(), request.getRequestURL().toString() + post.getId()));
         }
         catch( Exception e )
         {

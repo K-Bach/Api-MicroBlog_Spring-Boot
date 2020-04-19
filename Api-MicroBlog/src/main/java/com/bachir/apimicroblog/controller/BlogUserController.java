@@ -109,17 +109,9 @@ public class BlogUserController
     public ResponseEntity<JsonResponseBody> deleteUserById(@ApiParam@PathVariable("id") Long userId)
     {
         try
-        {   
-            if( blogUserService.getBlogUserById(userId).isPresent())
-            {
+        {
                 blogUserService.deleteBlogUserById(userId);
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new JsonResponseBody(HttpStatus.NO_CONTENT.value(), null));
-            }
-            else
-            {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new JsonResponseBody(HttpStatus.NOT_FOUND.value(), "Error: user not found"));
-            }
-                
         }
         catch( Exception e )
         {

@@ -53,33 +53,33 @@ public class BlogUserService
 
     public Optional<BlogUser> getBlogUserById( Long id ) throws Exception
     {
-        if( "".equals(id) )
+        if( "".equals(id.toString()) )
         {
             throw new Exception("Invalid id");
         }
         else
         {
-            Optional<BlogUser> user = getBlogUserById(id);
+            Optional<BlogUser> user = blogUserDao.findById(id);
             if( user.isEmpty() )
             {
                 throw new Exception("User not found");
             }
             else
             {
-                return blogUserDao.findById(id);
+                return user;
             }
         }
     }
 
     public void deleteBlogUserById( Long id ) throws Exception
     {
-        if( "".equals(id) )
+        if( "".equals(id.toString()) )
         {
             throw new Exception("Invalid id");
         }
         else
         {
-            Optional<BlogUser> user = getBlogUserById(id);
+            Optional<BlogUser> user = this.getBlogUserById(id);
             if( user.isEmpty() )
             {
                 throw new Exception("User not found");
