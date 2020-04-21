@@ -59,7 +59,7 @@ public class CommentController
         {
             
             Comment comment = commentService.getCommentById(commentId).get();
-            return ResponseEntity.status(HttpStatus.FOUND).body(new JsonResponseBody(HttpStatus.FOUND.value(), comment));
+            return ResponseEntity.status(HttpStatus.OK).body(new JsonResponseBody(HttpStatus.OK.value(), comment));
         }
         catch( Exception e )
         {

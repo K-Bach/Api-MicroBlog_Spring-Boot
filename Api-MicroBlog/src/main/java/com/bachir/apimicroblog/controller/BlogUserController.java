@@ -65,7 +65,7 @@ public class BlogUserController
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new JsonResponseBody(HttpStatus.NOT_FOUND.value(), "User not found"));
             }
             else
-                return ResponseEntity.status(HttpStatus.FOUND).body(new JsonResponseBody(HttpStatus.FOUND.value(), user.get()));
+                return ResponseEntity.status(HttpStatus.OK).body(new JsonResponseBody(HttpStatus.OK.value(), user.get()));
             
         }
         catch( Exception e )
@@ -81,7 +81,7 @@ public class BlogUserController
         try
         {
             BlogUser user = blogUserService.getBlogUserById(userId).get();
-            return ResponseEntity.status(HttpStatus.FOUND).body(new JsonResponseBody(HttpStatus.FOUND.value(), user));
+            return ResponseEntity.status(HttpStatus.OK).body(new JsonResponseBody(HttpStatus.OK.value(), user));
         }
         catch( Exception e )
         {
