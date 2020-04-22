@@ -6,6 +6,7 @@
 package com.bachir.apimicroblog.controller;
 
 import com.bachir.apimicroblog.domain.Comment;
+import com.bachir.apimicroblog.domain.Post;
 import com.bachir.apimicroblog.entities.JsonResponseBody;
 import com.bachir.apimicroblog.service.CommentService;
 import io.swagger.annotations.ApiOperation;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -68,11 +68,11 @@ public class CommentController
         }
     }
     
-    @RequestMapping(method = RequestMethod.GET, params = {"postId"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "returns all the comments by a post ID")
-    public ResponseEntity<JsonResponseBody> findCommentsByPostId(HttpServletRequest request, @RequestParam("postId") Long postId)
+    @RequestMapping(method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "returns all the comments by a post")
+    public ResponseEntity<JsonResponseBody> findCommentsByPost(HttpServletRequest request, @ApiParam@RequestBody Post p)
     {
-        return ResponseEntity.status(HttpStatus.OK).body(new JsonResponseBody(HttpStatus.OK.value(), commentService.getCommentsByPostId(postId)));
+        return ResponseEntity.status(HttpStatus.OK).body(new JsonResponseBody(HttpStatus.OK.value(), commentService.getCommentsByPost(p)));
     }
     
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

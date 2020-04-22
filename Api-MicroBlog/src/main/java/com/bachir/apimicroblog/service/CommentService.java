@@ -7,6 +7,7 @@ package com.bachir.apimicroblog.service;
 
 import com.bachir.apimicroblog.dao.CommentDao;
 import com.bachir.apimicroblog.domain.Comment;
+import com.bachir.apimicroblog.domain.Post;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +47,9 @@ public class CommentService
         return commentDao.findById(id);
     }
     
-    public Optional<Comment> getCommentsByPostId(Long postId)
+    public Iterable<Comment> getCommentsByPost(Post post)
     {
-        return commentDao.findCommentsByPostId(postId);
+        return commentDao.findByPost(post);
     }
     
     public void deleteCommentById(Long id)

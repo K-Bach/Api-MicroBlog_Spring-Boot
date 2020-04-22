@@ -6,7 +6,7 @@
 package com.bachir.apimicroblog.dao;
 
 import com.bachir.apimicroblog.domain.Comment;
-import java.util.Optional;
+import com.bachir.apimicroblog.domain.Post;
 import org.springframework.data.repository.CrudRepository;
 
 
@@ -16,6 +16,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface CommentDao extends CrudRepository<Comment, Long>
 {
-
-    public Optional<Comment> findCommentsByPostId( Long postId );
+    public Iterable<Comment> findByPost( Post post );
 }
