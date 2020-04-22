@@ -46,6 +46,11 @@ public class CommentService
         return commentDao.findById(id);
     }
     
+    public Optional<Comment> getCommentsByPostId(Long postId)
+    {
+        return commentDao.findCommentsByPostId(postId);
+    }
+    
     public void deleteCommentById(Long id)
     {
         commentDao.deleteById(id);

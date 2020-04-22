@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -65,6 +66,13 @@ public class CommentController
         {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new JsonResponseBody(HttpStatus.NOT_FOUND.value(), "Error: " + e.toString()));
         }
+    }
+    
+    @RequestMapping(method = RequestMethod.GET, params = {"postId"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "returns all the comments by a post ID")
+    public ResponseEntity<JsonResponseBody> findCommentsByPostId(HttpServletRequest request, @RequestParam("postId") Long postId)
+    {
+        return ResponseEntity.status(HttpStatus.OK).body(new JsonResponseBody(HttpStatus.OK.value(), commentService.getCommentsByPostId(postId)));
     }
     
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
