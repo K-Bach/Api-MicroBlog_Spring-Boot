@@ -6,7 +6,6 @@
 package com.bachir.apimicroblog.controller;
 
 import com.bachir.apimicroblog.domain.Comment;
-import com.bachir.apimicroblog.domain.Post;
 import com.bachir.apimicroblog.entities.JsonResponseBody;
 import com.bachir.apimicroblog.service.CommentService;
 import io.swagger.annotations.ApiOperation;
@@ -66,13 +65,6 @@ public class CommentController
         {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new JsonResponseBody(HttpStatus.NOT_FOUND.value(), "Error: " + e.toString()));
         }
-    }
-    
-    @RequestMapping(method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "returns all the comments by a post")
-    public ResponseEntity<JsonResponseBody> findCommentsByPost(HttpServletRequest request, @ApiParam@RequestBody Post p)
-    {
-        return ResponseEntity.status(HttpStatus.OK).body(new JsonResponseBody(HttpStatus.OK.value(), commentService.getCommentsByPost(p)));
     }
     
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

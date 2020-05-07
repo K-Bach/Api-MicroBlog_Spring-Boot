@@ -5,15 +5,16 @@
  */
 package com.bachir.apimicroblog.controller;
 
+import com.bachir.apimicroblog.domain.Comment;
 import com.bachir.apimicroblog.domain.Post;
 import com.bachir.apimicroblog.entities.JsonResponseBody;
+import com.bachir.apimicroblog.service.CommentService;
 import com.bachir.apimicroblog.service.PostService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,9 @@ public class PostController
 
     @Autowired
     PostService postService;
+    
+    @Autowired
+    CommentService commentService;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "returns all the posts")
@@ -45,10 +49,6 @@ public class PostController
         try
         {
             List<Post> posts = postService.getAllPosts();
-            for( int i = 0; i < posts.size(); i++ )
-            {
-                posts.get(i).add(linkTo(methodOn(BlogUserController.class).getUserById(posts.get(i).getAutore().getId())).withSelfRel());
-            }
             return ResponseEntity.status(HttpStatus.OK).body(new JsonResponseBody(HttpStatus.OK.value(), posts));
         }
         catch( Exception e )
@@ -72,9 +72,24 @@ public class PostController
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new JsonResponseBody(HttpStatus.NOT_FOUND.value(), "Error: " + e.toString()));
         }
     }
+    
+    @RequestMapping(value = "/{id}/comments", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    @ApiOperation(value = "returns a post by an ID")
+    public ResponseEntity<JsonResponseBody> getCommentsByPost( @ApiParam @PathVariable("id") Long postId )
+    {
+        try
+        {
+            List<Comment> commentsList = (List<Comment>) commentService.getCommentsByPost(postService.getPostById(postId).get());
+            return ResponseEntity.status(HttpStatus.OK).body(new JsonResponseBody(HttpStatus.OK.value(), commentsList));
+        }
+        catch( Exception e )
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new JsonResponseBody(HttpStatus.NOT_FOUND.value(), "Error: " + e.toString()));
+        }
+    }
 
     @RequestMapping(method = RequestMethod.POST)
-    @ApiOperation(value = "adds a post in the database", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "adds a post in the database", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JsonResponseBody> addPost( HttpServletRequest request, @ApiParam @RequestBody Post p )
     {
         try

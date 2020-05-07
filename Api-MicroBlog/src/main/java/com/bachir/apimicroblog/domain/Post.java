@@ -5,8 +5,7 @@
  */
 package com.bachir.apimicroblog.domain;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -17,8 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.hateoas.RepresentationModel;
 
 
 /**
@@ -27,9 +24,8 @@ import org.springframework.hateoas.RepresentationModel;
  */
 @Entity
 @Data
-@NoArgsConstructor
 @Table(name = "posts")
-public class Post extends RepresentationModel<Post>
+public class Post implements Serializable
 {
 
     private static final long serialVersionUID = 1L;
@@ -49,13 +45,5 @@ public class Post extends RepresentationModel<Post>
     @Basic
     private String testo;
 
-    @JsonCreator
-    public Post( @JsonProperty String titolo, @JsonProperty BlogUser autore, @JsonProperty Date dataOra, @JsonProperty String testo )
-    {
-        this.titolo = titolo;
-        this.autore = autore;
-        this.dataOra = dataOra;
-        this.testo = testo;
-    }
 
 }
